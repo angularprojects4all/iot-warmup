@@ -31,7 +31,7 @@ object SparkMatInteractor extends SparkInteractor {
 
   override def readMock(implicit spark: SparkSession): Unit = {
     val df = spark.read.option("header","true").option("mode", "PERMISSIVE") .csv("./spark-warehouse/temps/collections")
-    df.groupBy("sensor-id").agg("humidity" -> "min", "humidity" -> "avg", "humidity" -> "max").show
+    df.groupBy("sensor-id").agg("humidity" -> "min", "humidity" -> "avg", "humidity" -> "max").orderBy(org.apache.spark.sql.functions.col("avg(humidity)").desc ).show(1000)
   }
 
   override def readSample(implicit s: SparkSession): Unit = ???
